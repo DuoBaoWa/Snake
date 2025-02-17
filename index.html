@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贪吃蛇游戏</title>
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #69F0AE;
+            --danger-color: #FF5252;
+            --background-color: #f0f0f0;
+            --text-color: #333;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: var(--background-color);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            padding: 20px;
+            color: var(--text-color);
+        }
+
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            padding: 10px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .score-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #score, #highScore {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        #gameCanvas {
+            border: 3px solid var(--text-color);
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        #difficultySelect {
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 25px;
+            border: 2px solid var(--primary-color);
+            background-color: white;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        #difficultySelect:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            min-width: 300px;
+        }
+
+        .modal h2 {
+            color: var(--danger-color);
+            font-size: 28px;
+            margin-top: 0;
+        }
+
+        .modal p {
+            font-size: 18px;
+            margin: 15px 0;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+        }
+
+        @media (max-width: 600px) {
+            .game-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            #gameCanvas {
+                width: 90vw;
+                height: 90vw;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            button, #difficultySelect {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <div class="score-container">
+                <div id="score">分数: 0</div>
+                <div id="highScore">最高分: 0</div>
+            </div>
+            <select id="difficultySelect">
+                <option value="easy">简单</option>
+                <option value="normal" selected>普通</option>
+                <option value="hard">困难</option>
+            </select>
+        </div>
+
+        <canvas id="gameCanvas" width="600" height="600"></canvas>
+
+        <div class="controls">
+            <button id="startButton">开始游戏</button>
+            <button id="pauseButton">暂停</button>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="modal" id="gameOver">
+        <h2>游戏结束</h2>
+        <p>你的得分: <span id="finalScore">0</span></p>
+        <p>最高分: <span id="finalHighScore">0</span></p>
+        <button id="restartButton">重新开始</button>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
